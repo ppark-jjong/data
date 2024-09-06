@@ -26,7 +26,7 @@ if __name__ == "__main__":
         .appName("log dataframe ex") \
         .getOrCreate()
 
-    # define schema : 라이브러리 pyspark.sql.types 필요 
+    # define schema
     fields = StructType([
         StructField("ip", StringType(), False),
         StructField("timestamp", StringType(), False),

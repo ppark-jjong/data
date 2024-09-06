@@ -11,13 +11,13 @@ if __name__ == "__main__":
         .getOrCreate()
     sc: SparkContext = ss.sparkContext
 
-    log_rdd: RDD[str] = sc.textFile("fc-spark-streaming-main/part02/ch02_batch/data/log.txt")
+    log_rdd: RDD[str] = sc.textFile("data/log.txt")
 
     # check count
-    # print(f"count of RDD ==> {log_rdd.count()}")
+    print(f"count of RDD ==> {log_rdd.count()}")
 
     # print each row
-    # log_rdd.foreach(lambda v: print(v))
+    log_rdd.foreach(lambda v: print(v))
 
     # a) map
     # a-1) log.txt 의 각 행을 List[str] 형태로 받아오기.
@@ -82,15 +82,12 @@ if __name__ == "__main__":
         return status_code, api_method, ip
 
     # reduceByKey 사용
-    parsed_log_rdd.map(extract_cols)\
-        .map(lambda x: ((x[0], x[1]), x[2]))\
-        .reduceByKey(lambda i1, i2: f"{i1},{i2}") \
-        .map(lambda row: (row[0], row[1].split(",")))
+    # parsed_log_rdd.map(extract_cols)\
+    #     .map(lambda x: ((x[0], x[1]), x[2]))\
+    #     .reduceByKey(lambda i1, i2: f"{i1},{i2}") \
+    #     .map(lambda row: (row[0], row[1].split(",")))
 
     # groupby 사용
     parsed_log_rdd.map(extract_cols) \
         .map(lambda x: ((x[0], x[1]), x[2])) \
         .groupByKey().mapValues(list)  # 큰 데이터 셋에서 groupByKey를 하는 것은 성능적으로 좋지 않음.
-
-    while True:
-        pass
